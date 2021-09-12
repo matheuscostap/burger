@@ -34,6 +34,12 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion appSettings["compose_version"]
+    }
 }
 
 dependencies {
@@ -53,7 +59,17 @@ dependencies {
     implementation dependencies.hilt
     kapt dependencies.hilt_kapt
 
+    implementation dependencies.coil
+    implementation dependencies.coil_compose
+
     implementation dependencies.viewmodel
     implementation dependencies.arch_extensions
     implementation dependencies.arch_extensions_annotations
+
+    implementation dependencies.compose
+    implementation dependencies.compose_material
+    implementation dependencies.compose_tooling
+    implementation dependencies.activity_compose
+    androidTestImplementation dependencies.compose_test
+    debugImplementation dependencies.compose_debug
 }

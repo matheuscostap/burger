@@ -39,6 +39,14 @@ ext {
     //LifecycleScope
     lifecyclescopeVersion = "2.2.0"
 
+    //Compose
+    compose_version = "1.0.0-rc02"
+    activity_compose_version = "1.3.0-rc01"
+
+    //Coil
+    coil_version = "1.3.2"
+
+
     dependencies = [
             activity_ktx: "androidx.activity:activity-ktx:$activity_version",
             ktx: "androidx.core:core-ktx:$ktx_version",
@@ -61,6 +69,14 @@ ext {
             viewmodel: "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_version",
             arch_extensions: "android.arch.lifecycle:extensions:$androidArchitectureVersion",
             arch_extensions_annotations: "android.arch.lifecycle:compiler:$androidArchitectureVersion",
-            lifecyclescope: "androidx.lifecycle:lifecycle-runtime-ktx:$lifecyclescopeVersion"
+            lifecyclescope: "androidx.lifecycle:lifecycle-runtime-ktx:$lifecyclescopeVersion",
+            compose: "androidx.compose.ui:ui:$compose_version",
+            compose_material: "androidx.compose.material:material:$compose_version",
+            compose_tooling: "androidx.compose.ui:ui-tooling-preview:$compose_version",
+            compose_test: "androidx.compose.ui:ui-test-junit4:$compose_version",
+            compose_debug: "androidx.compose.ui:ui-tooling:$compose_version",
+            activity_compose: "androidx.activity:activity-compose:$activity_compose_version",
+            coil: "io.coil-kt:coil:$coil_version",
+            coil_compose: "io.coil-kt:coil-compose:$coil_version"
     ]
 }
