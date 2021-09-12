@@ -3,6 +3,8 @@ package com.costa.matheus.burger.products
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
+import androidx.lifecycle.ViewModelProviders
 import com.costa.matheus.burger.R
 import com.costa.matheus.burger.base.ViewState
 import dagger.hilt.android.AndroidEntryPoint
@@ -13,7 +15,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    @Inject lateinit var viewModel: ProductsViewModel
+    val viewModel: ProductsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,21 +30,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         GlobalScope.launch {
-            viewModel.state.collect { state ->
-                when(state) {
-                    is ViewState.Loading -> {
-                        Log.i("MainActivity", "Loading")
-                    }
-
-                    is ViewState.Success -> {
-                        Log.i("MainActivity", "Success")
-                        state.data?.let {
-                            Log.i("MainActivity", "$it")
+            withContext(Dispatchers.Main) {
+                viewModel.state.collect { state ->
+                    when(state) {
+                        is ViewState.Loading -> {
+                            Log.i("MainActivity", "Loading")
                         }
-                    }
 
-                    is ViewState.Error -> {
-                        Log.i("MainActivity", "Error")
+                        is ViewState.Success -> {
+                            Log.i("MainActivity", "Success")
+                            state.data?.let {
+                                Log.i("MainActivity", "$it")
+                            }
+                        }
+
+                        is ViewState.Error -> {
+                            Log.i("MainActivity", "Error")
+                        }
                     }
                 }
             }

@@ -38,9 +38,11 @@ android {
 
 dependencies {
     implementation project(':domain')
+    implementation project(':data')
     def dependencies = rootProject.ext.dependencies
 
     implementation dependencies.ktx
+    implementation dependencies.activity_ktx
     implementation dependencies.appcompat
     implementation dependencies.material
     implementation dependencies.constraintLayout

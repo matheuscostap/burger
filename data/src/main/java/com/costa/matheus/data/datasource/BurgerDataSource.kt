@@ -5,7 +5,7 @@ import retrofit2.http.GET
 
 interface BurgerDataSource {
 
-    @GET("URL")
+    @GET("/matheuscostap/burger/master/api.json")
     suspend fun getAllProducts(): List<ProductModel>
 
 }

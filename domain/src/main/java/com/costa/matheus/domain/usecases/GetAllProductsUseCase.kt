@@ -3,10 +3,13 @@ package com.costa.matheus.domain.usecases
 import com.costa.matheus.domain.entities.ProductEntity
 import com.costa.matheus.domain.repository.AllProductsRepository
 import kotlinx.coroutines.Deferred
+import javax.inject.Inject
+import javax.inject.Singleton
 
 
-class GetAllProductsUseCase (
-    private val repository: AllProductsRepository): BaseUseCase<NoParams, Deferred<List<ProductEntity>>>() {
+@Singleton
+class GetAllProductsUseCase @Inject constructor(
+    private val repository: AllProductsRepository){
 
-    override suspend fun call(param: NoParams) = repository.getProducts()
+    suspend fun call() = repository.getProducts()
 }

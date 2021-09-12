@@ -8,8 +8,11 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AllProductsRepositoryImpl(
+@Singleton
+class AllProductsRepositoryImpl @Inject constructor(
     private val dataSource: BurgerDataSource): AllProductsRepository {
 
     override suspend fun getProducts() = withContext(Dispatchers.IO) {

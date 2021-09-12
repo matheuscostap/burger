@@ -3,9 +3,8 @@ package com.costa.matheus.burger.products
 import com.costa.matheus.burger.base.BaseViewModel
 import com.costa.matheus.burger.base.ViewState
 import com.costa.matheus.domain.entities.ProductEntity
-import com.costa.matheus.domain.usecases.BaseUseCase
 import com.costa.matheus.domain.usecases.GetAllProductsUseCase
-import com.costa.matheus.domain.usecases.NoParams
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,8 +13,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
+@HiltViewModel
 class ProductsViewModel @Inject constructor(
-    private val useCase: BaseUseCase<NoParams, Deferred<List<ProductEntity>>>
+    private val useCase: GetAllProductsUseCase
 ): BaseViewModel() {
 
     private val privateState = MutableStateFlow<ViewState<List<ProductEntity>>>(ViewState.Success(null))
@@ -26,7 +26,7 @@ class ProductsViewModel @Inject constructor(
         jobs add launch {
             privateState.value = ViewState.Loading
             try {
-                val response = useCase.call(NoParams()).await()
+                val response = useCase.call().await()
                 privateState.value = ViewState.Success(response)
             } catch (t: Throwable) {
                 privateState.value = ViewState.Error(t, false)
