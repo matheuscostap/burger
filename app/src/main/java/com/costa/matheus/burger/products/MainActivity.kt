@@ -7,16 +7,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
@@ -53,6 +47,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent { buildUI() }
+
+        observeViewModel()
+        viewModel.getAllProducts()
     }
 
 
@@ -76,49 +73,51 @@ class MainActivity : AppCompatActivity() {
         LazyColumn {
             items(productList) { product -> 
                 ProductItem(product = product)
+                Divider(color = Color.LightGray, thickness = 1.dp, modifier = Modifier.padding(start = 16.dp, end = 16.dp))
             }
         }
     }
 
     @Composable
     private fun ProductItem(product: ProductEntity) {
-        Row(verticalAlignment = Alignment.CenterVertically,
+        Row(verticalAlignment = Alignment.Top,
             modifier = Modifier.fillMaxWidth()) {
             Image(painter = rememberImagePainter(data = product.image),
                 contentDescription = "",
                 Modifier
-                    .weight(2f)
+                    .size(100.dp)
+                    .weight(1f)
                     .padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = 8.dp))
 
             Column (
                 Modifier
+                    .fillMaxWidth()
                     .weight(3f)
-                    .padding(start = 8.dp, top = 16.dp, bottom = 16.dp, end = 8.dp)){
-                Text(text = product.name,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    color = Color.Black)
+                    .padding(start = 8.dp, top = 16.dp, bottom = 16.dp, end = 16.dp)){
+                
+                Row(verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()) {
+
+                    Text(text = product.name,
+                        fontSize = 16.sp,
+                        color = Color.Black,
+                        modifier = Modifier.weight(3f)
+                    )
+
+                    Text(
+                        text = product.price,
+                        fontSize = 16.sp,
+                        color = Color.Black,
+                        modifier = Modifier.weight(1.5f),
+                        textAlign = TextAlign.End
+                    )
+                }
 
                 Text(text = product.description,
-                    fontSize = 16.sp,
+                    fontSize = 14.sp,
                     color = Color.Gray)
             }
-            Text(
-                text = product.price,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
-                color = Color.Black,
-                modifier = Modifier
-                    .padding(start = 8.dp, top = 16.dp, bottom = 16.dp, end = 16.dp)
-                    .align(Alignment.Top)
-            )
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        observeViewModel()
-        viewModel.getAllProducts()
     }
 
     private fun observeViewModel() {
