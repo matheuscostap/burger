@@ -31,10 +31,12 @@ import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.costa.matheus.burger.R
 import com.costa.matheus.burger.base.ViewState
+import com.costa.matheus.domain.entities.Product
 import com.costa.matheus.domain.entities.ProductEntity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.transform
 import javax.inject.Inject
 
 
@@ -42,82 +44,14 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: ProductsViewModel by viewModels()
-    private val snapshotList = SnapshotStateList<ProductEntity>()
+    private val snapshotList = SnapshotStateList<Product>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { buildUI() }
+        setContent { ProductsUI().buildUI(snapshotList) }
 
         observeViewModel()
         viewModel.getAllProducts()
-    }
-
-
-    @Preview
-    @Composable
-    fun buildUI() {
-        Scaffold (topBar = { BurgerToolbar() }) {
-            ProductList(productList = snapshotList)
-        }
-    }
-
-    @Composable
-    private fun BurgerToolbar() {
-        TopAppBar (
-            title = { Text("Burger App") },
-        )
-    }
-
-    @Composable
-    private fun ProductList(productList: List<ProductEntity>) {
-        LazyColumn {
-            items(productList) { product -> 
-                ProductItem(product = product)
-                Divider(color = Color.LightGray, thickness = 1.dp, modifier = Modifier.padding(start = 16.dp, end = 16.dp))
-            }
-        }
-    }
-
-    @Composable
-    private fun ProductItem(product: ProductEntity) {
-        Row(verticalAlignment = Alignment.Top,
-            modifier = Modifier.fillMaxWidth()) {
-            Image(painter = rememberImagePainter(data = product.image),
-                contentDescription = "",
-                Modifier
-                    .size(100.dp)
-                    .weight(1f)
-                    .padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = 8.dp))
-
-            Column (
-                Modifier
-                    .fillMaxWidth()
-                    .weight(3f)
-                    .padding(start = 8.dp, top = 16.dp, bottom = 16.dp, end = 16.dp)){
-                
-                Row(verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()) {
-
-                    Text(text = product.name,
-                        fontSize = 16.sp,
-                        color = Color.Black,
-                        modifier = Modifier.weight(3f)
-                    )
-
-                    Text(
-                        text = product.price,
-                        fontSize = 16.sp,
-                        color = Color.Black,
-                        modifier = Modifier.weight(1.5f),
-                        textAlign = TextAlign.End
-                    )
-                }
-
-                Text(text = product.description,
-                    fontSize = 14.sp,
-                    color = Color.Gray)
-            }
-        }
     }
 
     private fun observeViewModel() {

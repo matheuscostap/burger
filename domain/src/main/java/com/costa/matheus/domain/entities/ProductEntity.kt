@@ -6,4 +6,4 @@ data class ProductEntity (
     val image: String,
     val price: String,
     val promotional_price: String?
-)
+): Product()

@@ -1,4 +1,6 @@
 package com.costa.matheus.data.model
 
-class ProductsPageResponse {
-}
+data class ProductsPageResponse (
+    val specialProducts: List<ProductModel>,
+    val allProducts: List<ProductModel>,
+)
