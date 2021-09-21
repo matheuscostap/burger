@@ -18,6 +18,7 @@ import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,6 +29,13 @@ import com.costa.matheus.domain.entities.SpecialProductEntity
 
 class ProductsUI {
 
+    private val cardsColors = arrayOf(
+        Color(0xFF982121),
+        Color(0XFFFF611d),
+        Color(0xffe32929),
+        Color(0xffffb80e),
+        Color(0xff813531)
+    )
 
     @Composable
     fun buildUI(snapshotList: SnapshotStateList<Product>) {
@@ -59,23 +67,30 @@ class ProductsUI {
                 }
             }
         }
-
-        Column {
-            LazyRow {
-                itemsIndexed(specialProducts) { index, product ->
-                    SpecialProductCard(product = product)
+        
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            item {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    SectionTitle("Combos")
+                    LazyRow {
+                        itemsIndexed(specialProducts) { index, product ->
+                            SpecialProductCard(product = product, cardsColors.random())
+                        }
+                    }
                 }
             }
 
-            LazyColumn {
-                itemsIndexed(allProducts) { index, product ->
-                    ProductItem(product = product)
-                    Divider(
-                        color = Color.LightGray,
-                        thickness = 1.dp,
-                        modifier = Modifier.padding(start = 16.dp, end = 16.dp)
-                    )
-                }
+            item {
+                SectionTitle("McOfertas")
+            }
+
+            itemsIndexed(allProducts) { index, product ->
+                ProductItem(product = product)
+                Divider(
+                    color = Color.LightGray,
+                    thickness = 1.dp,
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+                )
             }
         }
     }
@@ -124,10 +139,10 @@ class ProductsUI {
 
 
     @Composable
-    private fun SpecialProductCard(product: SpecialProductEntity) {
+    private fun SpecialProductCard(product: SpecialProductEntity, color: Color) {
         Card(
             elevation = 4.dp,
-            backgroundColor = Color(0xFFff611d),
+            backgroundColor = color,
             modifier = Modifier
                 .width(180.dp)
                 .height(240.dp)
@@ -135,34 +150,38 @@ class ProductsUI {
         ) {
 
             Column {
-                Text(
-                    text = product.name,
-                    fontSize = 16.sp,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                )
+                Column (Modifier.weight(5f)) {
+                    Text(
+                        text = product.name,
+                        fontSize = 16.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                    )
 
-                Text(
-                    text = product.description,
-                    fontSize = 14.sp,
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 8.dp, end = 8.dp)
-                )
+                    Text(
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 2,
+                        text = product.description,
+                        fontSize = 14.sp,
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 8.dp, end = 8.dp)
+                    )
 
-                Image(painter = rememberImagePainter(data = product.image),
-                    contentDescription = "",
-                    Modifier
-                        .background(color = Color(0xFFFFFFFF))
-                        .size(100.dp)
-                        .align(Alignment.CenterHorizontally)
-                )
+                    Image(painter = rememberImagePainter(data = product.image),
+                        contentDescription = "",
+                        Modifier
+                            .background(color = Color(0xFFFFFFFF))
+                            .size(100.dp)
+                            .align(Alignment.CenterHorizontally)
+                    )
+                }
 
                 Text(
                     text = product.price,
@@ -173,9 +192,21 @@ class ProductsUI {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(2.dp)
+                        .weight(1f)
                 )
             }
 
         }
+    }
+
+    @Preview
+    @Composable
+    private fun SectionTitle(title: String = "Titulo") {
+        Text(text = title,
+            fontSize = 20.sp,
+            color = Color(0XFFFF611d),
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(16.dp)
+        )
     }
 }
