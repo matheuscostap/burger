@@ -44,10 +44,26 @@ class ProductsUI {
         }
     }
 
+    @Preview
     @Composable
     private fun BurgerToolbar() {
         TopAppBar (
-            title = { Text("Burger App") },
+            elevation = 0.dp,
+            backgroundColor = Color.White,
+            content = {
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "\uD83C\uDF54 Burger App",
+                        textAlign = TextAlign.Center,
+                        fontSize = 20.sp,
+                        color = Color(0xFF982121),
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
         )
     }
 
@@ -199,7 +215,7 @@ class ProductsUI {
         }
     }
 
-    @Preview
+
     @Composable
     private fun SectionTitle(title: String = "Titulo") {
         Text(text = title,
