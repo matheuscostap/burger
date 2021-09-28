@@ -23,6 +23,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
+import com.costa.matheus.burger.base.ViewState
+import com.costa.matheus.domain.entities.DayOfferEntity
 import com.costa.matheus.domain.entities.Product
 import com.costa.matheus.domain.entities.ProductEntity
 import com.costa.matheus.domain.entities.SpecialProductEntity
@@ -38,13 +40,14 @@ class ProductsUI {
     )
 
     @Composable
-    fun buildUI(snapshotList: SnapshotStateList<Product>) {
+    fun buildUI(dayOffer: ViewState<DayOfferEntity>, snapshotList: SnapshotStateList<Product>) {
         Scaffold (topBar = { BurgerToolbar() }) {
+            DayOfferCard(dayOffer = dayOffer)
             ProductList(productList = snapshotList)
         }
     }
 
-    @Preview
+
     @Composable
     private fun BurgerToolbar() {
         TopAppBar (
@@ -65,6 +68,26 @@ class ProductsUI {
                 }
             }
         )
+    }
+
+    @Composable
+    private fun DayOfferCard(dayOffer: ViewState<DayOfferEntity>) {
+        when(dayOffer) {
+            is ViewState.Success -> {
+                Card(
+                    elevation = 4.dp,
+                    modifier = Modifier
+                        .height(200.dp)
+                        .fillMaxWidth()
+                ) {
+                    Image(painter = rememberImagePainter(data = dayOffer.data?.image),
+                        contentDescription = "",
+                        Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight())
+                }
+            }
+        }
     }
 
     @Composable

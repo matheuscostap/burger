@@ -2,12 +2,11 @@ package com.costa.matheus.burger.products
 
 import com.costa.matheus.burger.base.BaseViewModel
 import com.costa.matheus.burger.base.ViewState
+import com.costa.matheus.domain.entities.DayOfferEntity
 import com.costa.matheus.domain.entities.Product
-import com.costa.matheus.domain.entities.ProductEntity
-import com.costa.matheus.domain.entities.ProductPageEntity
 import com.costa.matheus.domain.usecases.GetAllProductsUseCase
+import com.costa.matheus.domain.usecases.GetDayOfferUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,21 +16,37 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
-    private val useCase: GetAllProductsUseCase
+    private val getAllProductsUseCase: GetAllProductsUseCase,
+    private val getDayOfferUseCase: GetDayOfferUseCase
 ): BaseViewModel() {
 
-    private val privateState = MutableStateFlow<ViewState<List<Product>>>(ViewState.Success(null))
-    val state: StateFlow<ViewState<List<Product>>> get() = privateState
+    private val allProductsPrivateState = MutableStateFlow<ViewState<List<Product>>>(ViewState.Success(null))
+    val allProductsState: StateFlow<ViewState<List<Product>>> get() = allProductsPrivateState
+
+    private val dayOfferPrivateState = MutableStateFlow<ViewState<DayOfferEntity>>(ViewState.Success(null))
+    val dayOfferState: StateFlow<ViewState<DayOfferEntity>> get() = dayOfferPrivateState
 
 
     fun getAllProducts() {
         jobs add launch {
-            privateState.value = ViewState.Loading
+            allProductsPrivateState.value = ViewState.Loading
             try {
-                val response = useCase.call().await()
-                privateState.value = ViewState.Success(response)
+                val response = getAllProductsUseCase.call().await()
+                allProductsPrivateState.value = ViewState.Success(response)
             } catch (t: Throwable) {
-                privateState.value = ViewState.Error(t, false)
+                allProductsPrivateState.value = ViewState.Error(t, false)
+            }
+        }
+    }
+
+    fun getDayOffer() {
+        jobs add launch {
+            dayOfferPrivateState.value = ViewState.Loading
+            try {
+                val response = getDayOfferUseCase.call().await()
+                dayOfferPrivateState.value = ViewState.Success(response)
+            } catch (t: Throwable) {
+                dayOfferPrivateState.value = ViewState.Error(t, false)
             }
         }
     }
