@@ -6,15 +6,9 @@ import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.snapshots.MutableSnapshot
-import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.snapshots.SnapshotStateObserver
 import com.costa.matheus.burger.base.ViewState
-import com.costa.matheus.domain.entities.DayOfferEntity
 import com.costa.matheus.domain.entities.Product
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -39,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     @Composable
     private fun MainActivityScreen(viewModel: ProductsViewModel) {
         val dayOffer = viewModel.dayOfferState.collectAsState().value
-        ProductsUI().buildUI(dayOffer, snapshotList)
+        ProductsScreen().buildUI(dayOffer, snapshotList)
     }
 
 

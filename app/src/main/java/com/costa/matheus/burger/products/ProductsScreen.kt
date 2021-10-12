@@ -8,12 +8,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -29,7 +32,7 @@ import com.costa.matheus.domain.entities.Product
 import com.costa.matheus.domain.entities.ProductEntity
 import com.costa.matheus.domain.entities.SpecialProductEntity
 
-class ProductsUI {
+class ProductsScreen {
 
     private val cardsColors = arrayOf(
         Color(0xFF982121),
@@ -42,8 +45,7 @@ class ProductsUI {
     @Composable
     fun buildUI(dayOffer: ViewState<DayOfferEntity>, snapshotList: SnapshotStateList<Product>) {
         Scaffold (topBar = { BurgerToolbar() }) {
-            DayOfferCard(dayOffer = dayOffer)
-            ProductList(productList = snapshotList)
+            ProductList(dayOffer = dayOffer, productList = snapshotList)
         }
     }
 
@@ -77,21 +79,25 @@ class ProductsUI {
                 Card(
                     elevation = 4.dp,
                     modifier = Modifier
-                        .height(200.dp)
+                        .height(220.dp)
+                        .padding(16.dp)
                         .fillMaxWidth()
                 ) {
                     Image(painter = rememberImagePainter(data = dayOffer.data?.image),
+                        contentScale = ContentScale.FillBounds,
                         contentDescription = "",
-                        Modifier
+                        modifier = Modifier
                             .fillMaxWidth()
-                            .fillMaxHeight())
+                            .fillMaxHeight()
+                            .fillMaxSize()
+                    )
                 }
             }
         }
     }
 
     @Composable
-    private fun ProductList(productList: List<Product>) {
+    private fun ProductList(dayOffer: ViewState<DayOfferEntity>, productList: List<Product>) {
         val specialProducts = mutableListOf<SpecialProductEntity>()
         val allProducts = mutableListOf<ProductEntity>()
 
@@ -107,7 +113,11 @@ class ProductsUI {
             }
         }
         
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(modifier = Modifier.wrapContentHeight()) {
+            item {
+                DayOfferCard(dayOffer = dayOffer)
+            }
+
             item {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     SectionTitle("Combos")
@@ -214,9 +224,9 @@ class ProductsUI {
                     )
 
                     Image(painter = rememberImagePainter(data = product.image),
+                        contentScale = ContentScale.FillBounds,
                         contentDescription = "",
-                        Modifier
-                            .background(color = Color(0xFFFFFFFF))
+                        modifier = Modifier
                             .size(100.dp)
                             .align(Alignment.CenterHorizontally)
                     )
