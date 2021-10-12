@@ -72,4 +72,6 @@ dependencies {
     implementation dependencies.activity_compose
     androidTestImplementation dependencies.compose_test
     debugImplementation dependencies.compose_debug
+
+    implementation dependencies.accompanist
 }

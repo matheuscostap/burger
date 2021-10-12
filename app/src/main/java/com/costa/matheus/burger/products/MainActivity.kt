@@ -19,13 +19,12 @@ import kotlinx.coroutines.flow.collect
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: ProductsViewModel by viewModels()
-    private val snapshotList = SnapshotStateList<Product>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent { MainActivityScreen(viewModel) }
 
-        observeViewModel()
         viewModel.getAllProducts()
         viewModel.getDayOffer()
     }
@@ -33,34 +32,8 @@ class MainActivity : AppCompatActivity() {
     @Composable
     private fun MainActivityScreen(viewModel: ProductsViewModel) {
         val dayOffer = viewModel.dayOfferState.collectAsState().value
-        ProductsScreen().buildUI(dayOffer, snapshotList)
-    }
-
-
-    private fun observeViewModel() {
-        GlobalScope.launch {
-            withContext(Dispatchers.Main) {
-                viewModel.allProductsState.collect { state ->
-                    when(state) {
-                        is ViewState.Loading -> {
-                            Log.i("MainActivity", "Loading")
-                        }
-
-                        is ViewState.Success -> {
-                            Log.i("MainActivity", "Success")
-                            state.data?.let {
-                                Log.i("MainActivity", "$it")
-                                snapshotList.addAll(it)
-                            }
-                        }
-
-                        is ViewState.Error -> {
-                            Log.i("MainActivity", "Error")
-                        }
-                    }
-                }
-            }
-        }
+        val allProducts = viewModel.allProductsState.collectAsState().value
+        ProductsScreen().buildUI(dayOffer, allProducts)
     }
 
 }

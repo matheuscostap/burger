@@ -33,25 +33,27 @@ class ProductsScreen {
     )
 
     @Composable
-    fun buildUI(dayOffer: ViewState<DayOfferEntity>, snapshotList: SnapshotStateList<Product>) {
+    fun buildUI(dayOffer: ViewState<DayOfferEntity>, allProducts: ViewState<List<Product>>) {
         Scaffold (topBar = { BurgerToolbar() }) {
-            ProductList(dayOffer = dayOffer, productList = snapshotList)
+            ProductList(dayOffer = dayOffer, productList = allProducts)
         }
     }
 
     @Composable
-    private fun ProductList(dayOffer: ViewState<DayOfferEntity>, productList: List<Product>) {
+    private fun ProductList(dayOffer: ViewState<DayOfferEntity>, productList: ViewState<List<Product>>) {
         val specialProducts = mutableListOf<SpecialProductEntity>()
         val allProducts = mutableListOf<ProductEntity>()
 
-        productList.forEach { product ->
-            when(product) {
-                is SpecialProductEntity -> {
-                    specialProducts.add(product)
-                }
+        if (productList is ViewState.Success) {
+            productList.data?.forEach { product ->
+                when(product) {
+                    is SpecialProductEntity -> {
+                        specialProducts.add(product)
+                    }
 
-                is ProductEntity -> {
-                    allProducts.add(product)
+                    is ProductEntity -> {
+                        allProducts.add(product)
+                    }
                 }
             }
         }
@@ -64,9 +66,14 @@ class ProductsScreen {
             item {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     SectionTitle("Combos")
-                    LazyRow {
-                        itemsIndexed(specialProducts) { index, product ->
-                            SpecialProductCard(product = product, cardsColors.random())
+
+                    when(productList) {
+                        is ViewState.Loading -> {
+                            LoadingSpecialProducts()
+                        }
+
+                        is ViewState.Success -> {
+                            SpecialProductsList(specialProducts)
                         }
                     }
                 }
@@ -82,6 +89,32 @@ class ProductsScreen {
                     color = Color.LightGray,
                     thickness = 1.dp,
                     modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+                )
+            }
+        }
+    }
+
+    @Composable
+    private fun LoadingSpecialProducts() {
+        LazyRow {
+            items(count = 2){
+                SpecialProductCard(
+                    product = null,
+                    cardsColors.random(),
+                    isLoading = true
+                )
+            }
+        }
+    }
+
+    @Composable
+    private fun SpecialProductsList(specialProducts: List<SpecialProductEntity>) {
+        LazyRow {
+            itemsIndexed(specialProducts) { index, product ->
+                SpecialProductCard(
+                    product = product,
+                    cardsColors.random(),
+                    isLoading = false
                 )
             }
         }

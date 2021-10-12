@@ -6,10 +6,7 @@ import com.costa.matheus.data.mapper.DayOfferMapper
 import com.costa.matheus.domain.entities.DayOfferEntity
 import com.costa.matheus.domain.entities.ProductEntity
 import com.costa.matheus.domain.repository.AllProductsRepository
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,12 +16,14 @@ class AllProductsRepositoryImpl @Inject constructor(
 
     override suspend fun getProducts() = withContext(Dispatchers.IO) {
         async {
+            delay(5000)
             AllProductsMapper().map(dataSource.getAllProducts())
         }
     }
 
     override suspend fun getDayOffer() = withContext(Dispatchers.IO) {
         async {
+            delay(5000)
             DayOfferMapper().map(dataSource.getDayOffer())
         }
     }

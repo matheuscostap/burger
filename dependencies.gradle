@@ -46,6 +46,9 @@ ext {
     //Coil
     coil_version = "1.3.2"
 
+    //Accompanist
+    accompanist_version = "0.19.0"
+
 
     dependencies = [
             activity_ktx: "androidx.activity:activity-ktx:$activity_version",
@@ -77,6 +80,7 @@ ext {
             compose_debug: "androidx.compose.ui:ui-tooling:$compose_version",
             activity_compose: "androidx.activity:activity-compose:$activity_compose_version",
             coil: "io.coil-kt:coil:$coil_version",
-            coil_compose: "io.coil-kt:coil-compose:$coil_version"
+            coil_compose: "io.coil-kt:coil-compose:$coil_version",
+            accompanist: "com.google.accompanist:accompanist-placeholder-material:$accompanist_version"
     ]
 }
