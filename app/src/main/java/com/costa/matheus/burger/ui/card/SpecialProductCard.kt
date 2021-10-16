@@ -1,6 +1,7 @@
 package com.costa.matheus.burger.ui.card
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -22,7 +23,11 @@ import com.google.accompanist.placeholder.fade
 import com.google.accompanist.placeholder.placeholder
 
 @Composable
-fun SpecialProductCard(product: SpecialProductEntity?, color: Color, isLoading: Boolean) {
+fun SpecialProductCard(
+    product: SpecialProductEntity?,
+    color: Color,
+    isLoading: Boolean,
+    onClick: (SpecialProductEntity) -> Unit = {}) {
 
     if (isLoading) {
         Card(
@@ -46,6 +51,7 @@ fun SpecialProductCard(product: SpecialProductEntity?, color: Color, isLoading: 
             elevation = 4.dp,
             backgroundColor = color,
             modifier = Modifier
+                .clickable(onClick = { product?.let { onClick(it) }})
                 .width(180.dp)
                 .height(240.dp)
                 .padding(8.dp)

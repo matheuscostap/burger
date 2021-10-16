@@ -1,6 +1,7 @@
 package com.costa.matheus.burger.products
 
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -15,6 +16,7 @@ import com.costa.matheus.burger.base.ViewState
 import com.costa.matheus.burger.ui.card.DayOfferCard
 import com.costa.matheus.burger.ui.card.SpecialProductCard
 import com.costa.matheus.burger.ui.itemlist.ProductItem
+import com.costa.matheus.burger.ui.itemlist.ProductItemLoading
 import com.costa.matheus.burger.ui.itemlist.SectionTitle
 import com.costa.matheus.burger.ui.toolbar.BurgerToolbar
 import com.costa.matheus.domain.entities.DayOfferEntity
@@ -83,13 +85,28 @@ class ProductsScreen {
                 SectionTitle("McOfertas")
             }
 
-            itemsIndexed(allProducts) { index, product ->
-                ProductItem(product = product)
-                Divider(
-                    color = Color.LightGray,
-                    thickness = 1.dp,
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp)
-                )
+            when(productList) {
+                is ViewState.Loading -> {
+                    items(count = 5) {
+                        ProductItemLoading()
+                        Divider(
+                            color = Color.LightGray,
+                            thickness = 1.dp,
+                            modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+                        )
+                    }
+                }
+
+                is ViewState.Success -> {
+                    itemsIndexed(allProducts) { index, product ->
+                        ProductItem(product = product, onClick = { })
+                        Divider(
+                            color = Color.LightGray,
+                            thickness = 1.dp,
+                            modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+                        )
+                    }
+                }
             }
         }
     }
@@ -114,7 +131,8 @@ class ProductsScreen {
                 SpecialProductCard(
                     product = product,
                     cardsColors.random(),
-                    isLoading = false
+                    isLoading = false,
+                    onClick = { }
                 )
             }
         }

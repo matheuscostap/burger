@@ -1,6 +1,8 @@
 package com.costa.matheus.burger.ui.itemlist
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -14,9 +16,13 @@ import coil.compose.rememberImagePainter
 import com.costa.matheus.domain.entities.ProductEntity
 
 @Composable
-fun ProductItem(product: ProductEntity) {
+fun ProductItem(product: ProductEntity, onClick: (ProductEntity) -> Unit) {
     Row(verticalAlignment = Alignment.Top,
-        modifier = Modifier.fillMaxWidth()) {
+        modifier = Modifier
+            .background(color = Color.White)
+            .fillMaxWidth()
+            .clickable { onClick(product) }
+    ) {
         Image(painter = rememberImagePainter(data = product.image),
             contentDescription = "",
             Modifier
