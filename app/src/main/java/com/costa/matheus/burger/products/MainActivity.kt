@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     private fun MainActivityScreen(viewModel: ProductsViewModel) {
         val dayOffer = viewModel.dayOfferState.collectAsState().value
         val allProducts = viewModel.allProductsState.collectAsState().value
-        ProductsScreen().buildUI(dayOffer, allProducts)
+        ProductsScreen(this).buildUI(dayOffer, allProducts)
     }
 
 }

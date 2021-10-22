@@ -19,6 +19,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
     }
 
     buildTypes {
@@ -40,11 +43,17 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion appSettings["compose_version"]
     }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
 }
 
 dependencies {
     implementation project(':domain')
     implementation project(':data')
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
     def dependencies = rootProject.ext.dependencies
 
     implementation dependencies.ktx
@@ -74,4 +83,5 @@ dependencies {
     debugImplementation dependencies.compose_debug
 
     implementation dependencies.accompanist
+    implementation dependencies.compose_icons
 }

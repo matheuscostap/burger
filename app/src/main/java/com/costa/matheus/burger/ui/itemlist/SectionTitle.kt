@@ -9,12 +9,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.costa.matheus.burger.ui.font.Jost
 
 
 @Preview
 @Composable
 fun SectionTitle(title: String = "Titulo") {
-    Text(text = title,
+    Text(
+        fontFamily = Jost,
+        text = title,
         fontSize = 20.sp,
         color = Color(0XFFFF611d),
         fontWeight = FontWeight.Bold,

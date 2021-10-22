@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
+import com.costa.matheus.burger.ui.font.Jost
 import com.costa.matheus.domain.entities.SpecialProductEntity
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.fade
@@ -60,6 +61,7 @@ fun SpecialProductCard(
                 Column {
                     Column (Modifier.weight(5f)) {
                         Text(
+                            fontFamily = Jost,
                             text = product.name,
                             fontSize = 16.sp,
                             color = Color.White,
@@ -71,6 +73,7 @@ fun SpecialProductCard(
                         )
 
                         Text(
+                            fontFamily = Jost,
                             overflow = TextOverflow.Ellipsis,
                             maxLines = 2,
                             text = product.description,
@@ -92,6 +95,7 @@ fun SpecialProductCard(
                     }
 
                     Text(
+                        fontFamily = Jost,
                         text = product.price,
                         fontSize = 16.sp,
                         color = Color.White,

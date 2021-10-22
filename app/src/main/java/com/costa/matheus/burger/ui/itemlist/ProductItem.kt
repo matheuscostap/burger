@@ -13,6 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
+import com.costa.matheus.burger.ui.font.Jost
 import com.costa.matheus.domain.entities.ProductEntity
 
 @Composable
@@ -39,13 +40,16 @@ fun ProductItem(product: ProductEntity, onClick: (ProductEntity) -> Unit) {
             Row(verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()) {
 
-                Text(text = product.name,
+                Text(
+                    fontFamily = Jost,
+                    text = product.name,
                     fontSize = 16.sp,
                     color = Color.Black,
                     modifier = Modifier.weight(3f)
                 )
 
                 Text(
+                    fontFamily = Jost,
                     text = product.price,
                     fontSize = 16.sp,
                     color = Color.Black,
@@ -54,7 +58,9 @@ fun ProductItem(product: ProductEntity, onClick: (ProductEntity) -> Unit) {
                 )
             }
 
-            Text(text = product.description,
+            Text(
+                fontFamily = Jost,
+                text = product.description,
                 fontSize = 14.sp,
                 color = Color.Gray)
         }

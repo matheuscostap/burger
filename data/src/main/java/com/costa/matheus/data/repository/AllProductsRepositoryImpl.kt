@@ -16,14 +16,12 @@ class AllProductsRepositoryImpl @Inject constructor(
 
     override suspend fun getProducts() = withContext(Dispatchers.IO) {
         async {
-            delay(5000)
             AllProductsMapper().map(dataSource.getAllProducts())
         }
     }
 
     override suspend fun getDayOffer() = withContext(Dispatchers.IO) {
         async {
-            delay(5000)
             DayOfferMapper().map(dataSource.getDayOffer())
         }
     }

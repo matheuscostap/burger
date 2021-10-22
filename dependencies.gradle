@@ -81,6 +81,7 @@ ext {
             activity_compose: "androidx.activity:activity-compose:$activity_compose_version",
             coil: "io.coil-kt:coil:$coil_version",
             coil_compose: "io.coil-kt:coil-compose:$coil_version",
-            accompanist: "com.google.accompanist:accompanist-placeholder-material:$accompanist_version"
+            accompanist: "com.google.accompanist:accompanist-placeholder-material:$accompanist_version",
+            compose_icons: "androidx.compose.material:material-icons-extended:$compose_version"
     ]
 }

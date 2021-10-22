@@ -13,6 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.costa.matheus.burger.ui.font.Jost
 
 @Preview
 @Composable
@@ -26,6 +27,7 @@ fun BurgerToolbar() {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
+                    fontFamily = Jost,
                     text = "\uD83C\uDF54 Burger App",
                     textAlign = TextAlign.Center,
                     fontSize = 20.sp,

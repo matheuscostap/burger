@@ -1,9 +1,9 @@
 package com.costa.matheus.domain.entities
 
-data class ProductEntity (
-    val name: String,
-    val description: String,
-    val image: String,
-    val price: String,
-    val promotional_price: String?
-): Product()
+class ProductEntity (
+    name: String,
+    description: String,
+    image: String,
+    price: String,
+    promotional_price: String?
+): Product(name,description,image,price,promotional_price)
