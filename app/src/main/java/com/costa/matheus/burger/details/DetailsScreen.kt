@@ -25,157 +25,177 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
+import com.costa.matheus.burger.base.ViewState
 import com.costa.matheus.burger.ui.font.Jost
 import com.costa.matheus.burger.ui.toolbar.BurgerToolbar
 import com.costa.matheus.burger.ui.toolbar.DetailsToolbar
+import com.costa.matheus.domain.entities.OrderItem
 import com.costa.matheus.domain.entities.Product
 
-class DetailsScreen(val product: Product = productPreview) {
 
-    @Preview
-    @Composable
-    fun buildUI(onClickBack: () -> Unit = {}) {
-        Scaffold(
-            topBar = { DetailsToolbar(onClickBack) },
-            backgroundColor = Color(0XFFFFB08F)
+@Composable
+fun DetailsScreen(
+    orderItem: OrderItem,
+    onEvent: (DetailsScreenEvent) -> Unit
+) {
+    Scaffold(
+        topBar = { DetailsToolbar { onEvent(OnBackPress) } },
+        backgroundColor = Color(0XFFFFB08F)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
         ) {
-            Column(
+            Row(
                 modifier = Modifier
-                    .fillMaxHeight()
+                    .weight(1f)
             ) {
-                Row(
+                Image(
+                    painter = rememberImagePainter(
+                        data = orderItem.product.image
+                    ),
+                    contentScale = ContentScale.Fit,
+                    contentDescription = "",
                     modifier = Modifier
-                        .weight(1f)
-                        //.background(Color.Green)
-                ) {
-                    Image(
-                        painter = rememberImagePainter(
-                            data = product.image
-                        ),
-                        contentScale = ContentScale.Fit,
-                        contentDescription = "",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight()
-                    )
-                }
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                )
+            }
 
-                Row(
-                    verticalAlignment = Alignment.Bottom,
+            Row(
+                verticalAlignment = Alignment.Bottom,
+                modifier = Modifier
+                    .weight(1.5f)
+            ) {
+                DetailInfos(
+                    onEvent = onEvent,
+                    orderItem = orderItem,
                     modifier = Modifier
-                        .weight(1.5f)
-                ) {
-                    DetailInfos()
-                }
+                        .weight(0.8f)
+                )
             }
         }
     }
+}
 
-    @Composable
-    fun DetailInfos() {
-        Box(
-            modifier = Modifier
-                .wrapContentSize()
-                .clip(shape = RoundedCornerShape(
+@Composable
+private fun DetailInfos(
+    orderItem: OrderItem,
+    modifier: Modifier,
+    onEvent: (DetailsScreenEvent) -> Unit
+) {
+    Box(
+        modifier = modifier
+            .clip(
+                shape = RoundedCornerShape(
                     topStart = 25.dp,
-                    topEnd = 25.dp)
+                    topEnd = 25.dp
                 )
-                .background(Color.White)
-                .fillMaxWidth()
+            )
+            .background(Color.White)
+            .fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(24.dp)
+                .wrapContentSize()
         ) {
-            Column(
+            Text(
+                fontFamily = Jost,
+                fontWeight = FontWeight.Bold,
+                text = orderItem.product.name,
+                fontSize = 22.sp,
+                color = Color.Black,
                 modifier = Modifier
-                    .padding(24.dp)
-                    .wrapContentSize()
+                    .weight(0.5f)
+                    .fillMaxWidth()
+            )
+
+            Row(
+                modifier = Modifier
+                    .weight(2f)
             ) {
                 Text(
-                    fontFamily = Jost,
-                    fontWeight = FontWeight.Bold,
-                    text = product.name,
-                    fontSize = 22.sp,
-                    color = Color.Black,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
-
-                Text(
-                    text = product.description,
+                    text = orderItem.product.description,
                     overflow = TextOverflow.Ellipsis,
                     fontFamily = Jost,
                     fontSize = 16.sp,
                     color = Color.Gray,
                     modifier = Modifier
-                        .padding(top = 8.dp)
                         .fillMaxWidth()
+                        .fillMaxHeight()
+                        .padding(top = 8.dp)
+                )
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(top = 2.dp, bottom = 2.dp)
+                    .fillMaxWidth()
+            ) {
+                IconButton(
+                    onClick = { onEvent(OnItemAdded) },
+                    modifier = Modifier
+                        .width(40.dp)
+                        .height(40.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = "",
+                        tint = Color.Black
+                    )
+                }
+
+                Text(
+                    fontFamily = Jost,
+                    text = orderItem.quantity.toString(),
+                    fontSize = 22.sp,
+                    color = Color.Black
                 )
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                IconButton(
+                    onClick = { onEvent(OnItemRemoved) },
+                    enabled = orderItem.quantity > 1,
                     modifier = Modifier
-                        .padding(top = 48.dp, bottom = 48.dp)
-                        .fillMaxWidth()
+                        .width(40.dp)
+                        .height(40.dp)
                 ) {
-                    IconButton(
-                        onClick = { },
-                        modifier = Modifier
-                            .width(40.dp)
-                            .height(40.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Add,
-                            contentDescription = "",
-                            tint = Color.Black
-                        )
-                    }
-
-                    Text(
-                        fontFamily = Jost,
-                        text = "1",
-                        fontSize = 22.sp,
-                        color = Color.Black
-                    )
-
-                    IconButton(
-                        onClick = { },
-                        modifier = Modifier
-                            .width(40.dp)
-                            .height(40.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Remove,
-                            contentDescription = "",
-                            tint = Color.Black
-                        )
-                    }
-
-                    Text(
-                        fontFamily = Jost,
-                        text = product.price,
-                        fontSize = 20.sp,
-                        color = Color.Black,
-                        textAlign = TextAlign.End,
-                        modifier = Modifier
-                            .fillMaxWidth()
+                    Icon(
+                        imageVector = Icons.Filled.Remove,
+                        contentDescription = "",
+                        tint = Color.Black
                     )
                 }
 
-                Button(
-                    shape = RoundedCornerShape(30.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xffd18b87),
-                    ),
-                    onClick = { },
+                Text(
+                    fontFamily = Jost,
+                    text = orderItem.formattedPrice,
+                    fontSize = 20.sp,
+                    color = Color.Black,
+                    textAlign = TextAlign.End,
                     modifier = Modifier
-                        .height(50.dp)
                         .fillMaxWidth()
-                ) {
-                    Text(
-                        fontFamily = Jost,
-                        text = "Adicionar ao Carrinho",
-                        fontSize = 18.sp,
-                        color = Color.White
-                    )
-                }
+                )
+            }
+
+            Button(
+                shape = RoundedCornerShape(30.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(0xffd18b87),
+                ),
+                onClick = { onEvent(OnItemAddedToOrder) },
+                modifier = Modifier
+                    .weight(0.6f)
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    fontFamily = Jost,
+                    text = "Adicionar ao Carrinho",
+                    fontSize = 18.sp,
+                    color = Color.White
+                )
             }
         }
     }
